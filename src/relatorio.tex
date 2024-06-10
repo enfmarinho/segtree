@@ -15,33 +15,30 @@
 
 \section{Resumo} 
 \leavevmode
-\indent Esse relatório tem como objetivo explicar a aplicação prática da Árvore de Segmentos, suas informações teóricas, assim como seus algoritmos e suas utilidades e aplicações na área de escolha geoespacial.
+Esse relatório tem como objetivo explicar a aplicação prática da Árvore de Segmentos, suas informações teóricas, assim como seus algoritmos e suas utilidades e aplicações na área de escolha geoespacial.
 
 \section{Introdução}
-\leavevmode
-\indent A árvore de segmentos é uma estrutura de dados usada para armazenar invervalos ou segmentos de dados, permitindo consultas e atualizações rápidas em intervalos em relação à outras estruturas de dados para aplicações semelhantes. Ela consiste em algumas características principais: \\
-\leavevmode
-\indent Estrutura hierárquica: É uma árvore binária onde cada nó representa um intervalo.\\
-\leavevmode
-\indent Eficiência: Permite consultas e atualizações em tempo logarítmico, O(log n). \\
-\leavevmode
-\indent Flexibilidade: Suporta várias operações como soma, mínimo, máximo e outras entre intervalos. \\
-\leavevmode
-\indent Aplicações: Usada em problemas de intervalos como consultas de intervalo e problemas de processamento de sinais. 
+\indent A árvore de segmentos é uma estrutura de dados usada para armazenar invervalos ou segmentos de dados, permitindo consultas e atualizações rápidas em intervalos em relação à outras estruturas de dados para aplicações semelhantes. Ela consiste em algumas características principais:
+\begin{enumerate}
+\item Estrutura hierárquica: É uma árvore binária onde cada nó representa um intervalo.
+\item Eficiência: Permite consultas e atualizações em tempo logarítmico, O(log n). 
+\item Flexibilidade: Suporta várias operações como soma, mínimo, máximo e outras entre intervalos. 
+\item Aplicações: Usada em problemas de intervalos como consultas de intervalo e problemas de processamento de sinais. 
+\end{enumerate}
 
 
 \section{Informações teóricas}
 A árvore de segmento é uma árvore binária balanceada. Cada nó na árvore representa um intervalo da lista original.
 A árvore é construída de modo que a raiz represente todo o intervalo da lista, as folhas representem os elementos
 da lista individualmente e os nós internos representem a combinação de seus filhos, por meio da operação especificada.
-A árvore de segmento é uma estrutura de dados eficiente e versátil para operações de intervalo
+A árvore de segmento é uma estrutura de dados eficiente e versátil para operações de intervalo.
 
 \subsection{Implementação}
 Todas as funções foram feitas de maneira recursiva, por isso, foi necessário utilizar variáveis de controle como parametros da função,
 essas variáveis não são do interesse do usúario, portanto, foram definidas funções públicas e outras privadas, para facilitar o uso para o usuário. 
 Note tambem que, as variáveis 
 que começam com 'm' são variáveis do objeto e que a função "Operacao" é a função que realiza a operação definida pelo usúario para ser realizada
-na árvore, comummente sendo a operação de soma, de mínimo ou máximo ou me multiplicação. A árvore é armazenada como um array, na qual o filho da 
+na árvore, comummente sendo a operação de soma, de mínimo ou máximo ou de multiplicação. A árvore é armazenada como um array, na qual o filho da 
 esquerda do nó atual tem índicie 2*p e o filho da direita 2*p+1, sendo p o índicie do pai. A raiz da árvore é armazenada do índicie 1.
 
 \subsubsection{Construção}
@@ -50,7 +47,7 @@ neutro da operação.
 O algoritmo funciona da seguinte forma.
 \begin{enumerate}
   \item Caso Base (Nó Folha): Se o intervalo atual cobre um único elemento, define o valor do nó folha como o valor correspondente da lista inicial.
-  \item Divisão e Recursão: Divide o intervalo atual em dois e chama recursivamente a função construir para os filhos da esquerda e da direita. Após construir os filhos, combina os resultados usando a função Operacao e define o valor do nó atual.
+  \item Divisão e Recursão: Divide o intervalo atual em dois e chama recursivamente a função construir para os filhos da esquerda e da direita. Após construir os filhos, combina os resultados usando a função Operacao, definindo assim, o valor do nó atual.
 \end{enumerate}
 \subsubsection{Complexidade}
 A complexidade do algoritmo de construção é O(n), na qual n é o número de elementos na lista original.
@@ -63,20 +60,22 @@ Isso porque, cada elemento da lista é processado uma vez e cada nó da árvore 
     construir(lista, 1, 0, m_numero_de_elementos - 1);
   }
   private construir(lista, indicie, inicio, final) {
-    // Se inicio é igual a final, significa que o intervalo atual cobre apenas um
-    // único elemento, sendo esse um nó folha na árvore de segmento. O valor dos nós
-    // folhas são definidos como o valor correspondente da lista inicial (lista[inicio]).
+    // Se inicio é igual a final, significa que o intervalo atual cobre
+    // apenas um único elemento, sendo esse um nó folha na árvore de 
+    // segmento. O valor dos nós folhas são definidos como o valor 
+    // correspondente da lista inicial (lista[inicio]).
     if (inicio == final) 
       return m_arvore_segmentos[indicie] = lista[inicio];
 
     meio = (inicio + final) / 2; // indicie do meio do intervalo.
 
-    // Chama a função para construir os filhos do nó atual e, após isso, combinamos os
-    // resultados usando a função Operacao para definir o valor do nó atual 
-    // (m_arvore_segmentos[indicie]).
-    return m_arvore_segmentos[indicie] =
-               Operacao(construir(lista, 2 * indicie, inicio, meio),
-                        construir(lista, 2 * indicie + 1, meio + 1, final));
+    // Chama a função para construir os filhos do nó atual e, após isso, 
+    // combinamos os resultados usando a função Operacao para definir o 
+    // valor do nó atual (m_arvore_segmentos[indicie]).
+    return m_arvore_segmentos[indicie] = Operacao(
+              construir(lista, 2 * indicie, inicio, meio), // inicio ate o meio
+              construir(lista, 2 * indicie + 1, meio + 1, final) // meio ate o fim
+              );
   }
 \end{verbatim}
 
@@ -86,7 +85,7 @@ maneira recursiva, de modo a alterar todos os nós da raiz até o nó sendo alte
 todos os intervalos que contém o nó sendo atualizado, de modo a refletir a mudança do valor, recalculando
 todos os intervalos.
 \subsubsection{Complexidade}
-Esse algorítmo de atualização percorre a árvore de segmento do nó raiz até um nó folha, realizando
+Esse algorítmo de atualização percorre a árvore de segmento do nó raiz até o nó a ser alterado (nó folha, no pior caso), realizando
 um número constante de operações em cada nível da árvore. Como a altura da árvore é O(log n), a
 complexidade da operação de atualização é O(log n).
 \subsubsection{Pseudocódigo}
@@ -96,24 +95,24 @@ complexidade da operação de atualização é O(log n).
     atualizar(indicie_lista, valor, 1, 0, m_numero_de_elementos - 1);
   }
   private atualizar(indicie_lista, valor, indicie_arvore, inicio, fim) {
-    // Se o indicie_lista está fora dos limites do intervalo atual [inicio, fim],
-    // a função retorna o valor atual do nó (m_arvore_segmentos[indicie_arvore]). 
-    // Isso significa que esse nó e seus filhos não precisam ser atualizados.
+    // Se o indicie_lista está fora dos limites do intervalo atual 
+    // [inicio, fim], a função retorna o valor atual do nó 
+    // (m_arvore_segmentos[indicie_arvore]). Isso significa que esse nó
+    // e seus filhos não precisam ser atualizados.
     if (indicie_lista < inicio || indicie_lista > fim) 
       return m_arvore_segmentos[indicie_arvore];
 
-    // Se inicio é igual a fim, significa que o intervalo atual cobre apenas um 
-    // único elemento. Esse é o nó folha correspondente ao índice indicie_lista
-    // na lista original. Portanto, atualizamos o valor deste nó com o novo valor
-    // fornecido e retornamos o valor atualizado.
+    // Se inicio é igual a fim, significa que o intervalo atual cobre 
+    // apenas um único elemento. Esse é o nó folha correspondente ao 
+    // índice indicie_lista na lista original. Portanto, atualizamos 
+    // o valor deste nó com o novo valor fornecido e retornamos o valor
+    // atualizado.
     else if (inicio == fim) 
       return m_arvore_segmentos[indicie_arvore] = valor;
 
     meio = (inicio + fim) / 2;
     return m_arvore_segmentos[indicie] = Operacao(
-               // chama para o inicio ate o meio
                atualizar(indicie_lista, valor, 2 * indicie_arvore, inicio, meio),
-               // meio ate o fim
                atualizar(indicie_lista, valor, 2 * indicie_arvore + 1, meio + 1, fim) 
                );
   }
@@ -148,29 +147,30 @@ ser O(log n), e ao fato de que cada nó é visitado uma vez por nível da árvor
 \subsubsection{Pseudocódigo}
 \begin{verbatim}
   public consultar(inicio_intervalo, final_intervalo) {
-    // Executa o algoritmo começando da raiz, com os intervalos limites da árvore.
-    // Chama com o final_intervalo - 1, pois o usuário espera que o intervalo passado 
-    // por ele seja um intervalo fechado, aberto, mas o algoritmo espera que o intervalo
-    // seja fechado, fechado.
+    // Executa o algoritmo começando da raiz, com os intervalos limites 
+    // da árvore. Chama com o final_intervalo - 1, pois o usuário espera
+    // que o intervalo passado por ele seja um intervalo fechado, aberto,
+    // mas o algoritmo espera que o intervalo seja fechado, fechado.
     return consultar(inicio_intervalo, final_intervalo - 1, 1, 0,
                      m_numero_de_elementos - 1);
   }
   private consultar(inicio_intervalo, final_intervalo, indicie, incio, final) {
-    // Se o intervalo de consulta [inicio_intervalo, final_intervalo] não se sobrepõe
-    // ao intervalo coberto pelo nó atual [incio, final], a função retorna o elemento 
-    // neutro da operação
+    // Se o intervalo de consulta [inicio_intervalo, final_intervalo] não se 
+    // sobrepõe ao intervalo coberto pelo nó atual [incio, final], a função 
+    // retorna o elemento neutro da operação
     if (final_intervalo < incio || inicio_intervalo > final) 
       return m_elemento_neutro;
 
-    // Se o intervalo coberto pelo nó atual está completamente dentro do intervalo
-    // de consulta, retorne o valor armazenado no nó atual (m_arvore_segmentos[indicie]).
+    // Se o intervalo coberto pelo nó atual está completamente dentro do 
+    // intervalo de consulta, retorne o valor armazenado no nó atual 
+    // (m_arvore_segmentos[indicie]).
     else if (inicio_intervalo <= incio && final <= final_intervalo) 
       return m_arvore_segmentos[indicie];
 
     meio = (incio + final) / 2; 
 
-    // retornar o resultado da operação para o valor do intervalo da esquerda e da 
-    // direita, ou seja, combina os intervalos da direita e da esquerda.
+    // retornar o resultado da operação para o valor do intervalo da esquerda 
+    // e da direita, ou seja, combina os intervalos da direita e da esquerda.
     return Operacao(
         consultar(inicio_intervalo, final_intervalo, 2 * indicie, incio, meio),
         consultar(inicio_intervalo, final_intervalo, 2 * indicie + 1, meio + 1, final)
