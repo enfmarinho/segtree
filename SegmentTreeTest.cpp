@@ -1,4 +1,4 @@
-#include "SegmentTree/SegmentTree.h"
+#include "SegmentTree.h"
 #include "gtest/gtest.h"
 #include <utility> // move
 #include <vector>
