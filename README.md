@@ -1,7 +1,7 @@
 # Compilando e testando
 Para compilar é necessário ter o gtest framework e cmake instalados.
 ````bash
-cmake -S . -B build
+cmake -S src -B build
 cmake --build build
 ./build/segment_tree_test
 ``````
